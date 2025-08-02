@@ -184,8 +184,8 @@ const Cameras = () => {
 
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900 p-6 relative">
-      <h1 className="text-2xl font-bold mb-4">📡 Live Camera Feeds</h1>
+    <div className="min-h-[91%] bg-gray-50 text-gray-900 p-0 relative">
+      <div className="text-xl font-semibold mb-2">Live Stream</div>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {Object.entries(peerStreams).map(([peerId, stream]) => (

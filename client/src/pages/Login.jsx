@@ -12,16 +12,22 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate('/');
+    navigate("/");
     // Handle login logic
   };
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen w-full font-inter bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white">
       {/* Left - Illustration */}
-      <div className="hidden md:flex w-1/2 items-center justify-center bg-[#f0f0f0] dark:bg-zinc-800">
-        <div className="w-full h-full">
-          <IndustryIllustration />
+      <div className="hidden md:flex w-1/2 items-center justify-center bg-[#f0f0f0] dark:bg-zinc-800 p-10">
+        <div className="max-w-[500px] w-full">
+          <h2 className="mt-6 text-4xl font-bold text-center text-zinc-700 dark:text-white">
+            Project Pragya
+          </h2>
+          <p className="mt-2 text-center text-zinc-500">
+            Industrial Intelligence, Redefined.
+          </p>
+          <IndustryIllustration style={{ width: "100%", height: "auto" }} />
         </div>
       </div>
 
@@ -30,7 +36,9 @@ export default function Login() {
         <div className="w-full max-w-md space-y-6 p-8 rounded-3xl shadow-2xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700">
           <div className="text-center">
             <h1 className="text-4xl font-bold mb-2">Sign in</h1>
-            <p className="text-sm text-zinc-500">Welcome back! Please enter your credentials.</p>
+            <p className="text-sm text-zinc-500">
+              Welcome back! Please enter your credentials.
+            </p>
           </div>
 
           <form className="space-y-5" onSubmit={handleSubmit}>
