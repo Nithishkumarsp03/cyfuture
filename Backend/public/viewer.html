@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Viewer</title>
+  <style>
+    body {
+      background-color: #000;
+      color: white;
+      font-family: sans-serif;
+    }
+    video {
+      width: 45%;
+      margin: 10px;
+      border: 2px solid #fff;
+    }
+  </style>
+</head>
+<body>
+  <h1>Connected Cameras</h1>
+  <div id="videos"></div>
+
+  <script>
+    const socket = new WebSocket(location.origin.replace(/^http/, 'ws'));
+    const peerConnections = {};
+    const videoContainer = document.getElementById('videos');
+    let clientId = null;
+
+    socket.onopen = () => {
+      console.log('✅ WebSocket connected (viewer)');
+    };
+
+    socket.onmessage = async (event) => {
+      const msg = JSON.parse(event.data);
+      console.log('📥 Received:', msg);
+
+      switch (msg.type) {
+        case 'init':
+          msg.peers.forEach(peerId => createPeerConnection(peerId));
+          break;
+
+        case 'offer':
+          if (!peerConnections[msg.from]) {
+            await createPeerConnection(msg.from);
+          }
+          await peerConnections[msg.from].setRemoteDescription(new RTCSessionDescription(msg.offer));
+          const answer = await peerConnections[msg.from].createAnswer();
+          await peerConnections[msg.from].setLocalDescription(answer);
+          socket.send(JSON.stringify({
+            type: 'answer',
+            answer,
+            to: msg.from,
+            from: clientId
+          }));
+          break;
+
+        case 'ice':
+          if (peerConnections[msg.from]) {
+            try {
+              await peerConnections[msg.from].addIceCandidate(new RTCIceCandidate(msg.ice));
+            } catch (e) {
+              console.warn('ICE add failed', e);
+            }
+          }
+          break;
+
+        case 'id':
+          clientId = msg.id;
+          break;
+      }
+    };
+
+    async function createPeerConnection(peerId) {
+      const pc = new RTCPeerConnection({
+        iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
+      });
+
+      peerConnections[peerId] = pc;
+
+      pc.onicecandidate = (event) => {
+        if (event.candidate) {
+          socket.send(JSON.stringify({
+            type: 'ice',
+            ice: event.candidate,
+            to: peerId,
+            from: clientId
+          }));
+        }
+      };
+
+      pc.ontrack = (event) => {
+        console.log('📽️ ontrack event:', event);
+        const existing = document.getElementById(`video-${peerId}`);
+        if (!existing && event.streams && event.streams[0]) {
+          const newVideo = document.createElement('video');
+          newVideo.id = `video-${peerId}`;
+          newVideo.srcObject = event.streams[0];
+          newVideo.autoplay = true;
+          newVideo.playsInline = true;
+          newVideo.muted = true; // optional to avoid autoplay issues
+          newVideo.addEventListener('loadedmetadata', () => {
+            newVideo.play().catch(err => console.warn("🔇 Playback failed:", err));
+          });
+          videoContainer.appendChild(newVideo);
+        }
+      };
+    }
+  </script>
+</body>
+</html>

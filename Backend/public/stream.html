@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Streamer</title>
+  </head>
+  <body>
+    <h1>📸 You are sharing your camera</h1>
+    <video id="localVideo" autoplay playsinline muted></video>
+    <script>
+      const protocol =
+        window.location.protocol === "https:" ? "wss://" : "ws://";
+      const ws = new WebSocket(protocol + window.location.host);
+      const peers = {};
+      let localStream;
+
+      ws.onopen = () => console.log("✅ WebSocket connected (stream)");
+      ws.onmessage = async (e) => {
+        const msg = JSON.parse(e.data);
+        console.log("📥 Received:", msg);
+        if (msg.type === "init") {
+          msg.peers.forEach((id) => createOffer(id));
+        } else if (msg.type === "answer") {
+          peers[msg.from]?.setRemoteDescription(
+            new RTCSessionDescription(msg.answer)
+          );
+        } else if (msg.type === "ice") {
+          peers[msg.from]?.addIceCandidate(new RTCIceCandidate(msg.ice));
+        }
+      };
+
+      async function createOffer(id) {
+        const pc = new RTCPeerConnection();
+        peers[id] = pc;
+        localStream
+          .getTracks()
+          .forEach((track) => pc.addTrack(track, localStream));
+
+        pc.onicecandidate = (e) => {
+          if (e.candidate) {
+            ws.send(JSON.stringify({ to: id, type: "ice", ice: e.candidate }));
+          }
+        };
+
+        const offer = await pc.createOffer();
+        await pc.setLocalDescription(offer);
+        ws.send(JSON.stringify({ to: id, type: "offer", offer }));
+      }
+
+      navigator.mediaDevices
+        .getUserMedia({ video: true, audio: false })
+        .then((stream) => {
+          localStream = stream;
+          document.getElementById("localVideo").srcObject = stream;
+
+          // Wait until stream is ready, then notify viewers
+          ws.send(JSON.stringify({ type: "ready", stream: true }));
+        });
+    </script>
+  </body>
+</html>
