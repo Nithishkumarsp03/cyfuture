@@ -4,16 +4,57 @@ import IndustryIllustration from "../Animations/IndustryIllustration";
 import { GoogleLogin } from "@react-oauth/google";
 import Input from "../components/input/input";
 import NextUIButton from "../components/button/button";
+import { useToast } from "../components/Toast/ToastContext";
 
 export default function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { addToast } = useToast();
+  const api = import.meta.env.VITE_API_URL;
 
-  const handleSubmit = (e) => {
+  //   {
+  //   "message": "User registered successfully",
+  //   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiN2RkNjdmNGQtNWRiYy00MmM3LTliZTktNjE0YjlmNzI0MWZjIiwiZW1haWwiOiJuaXRoaXNoa3VtYXIuY3MyM0BiaXRzYXRoeS5hYy5pbiJ9LCJpYXQiOjE3NTQ3MzAzMzUsImV4cCI6MTc1NDczMzkzNX0.CNNmOoV_EsTGMGDxe4mx6rNqaQGpZbJyiyG4_YttojE",
+  //   "user": {
+  //     "id": "7dd67f4d-5dbc-42c7-9be9-614b9f7241fc",
+  //     "name": "NITHISH KUMAR",
+  //     "email": "nithishkumar.cs23@bitsathy.ac.in"
+  //   }
+  // }
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate("/");
-    // Handle login logic
+    if(!email || !password){
+      addToast('Both Email & Password are required!');
+      return;
+    }
+    try {
+      const res = await fetch(
+        `${api}/auth/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        }
+      );
+
+      const data = await res.json();
+      if (!res.ok) throw new Error("Login Failed");
+      if (!data.token) {
+        throw new Error("Invalid login Credentials");
+      }
+      addToast(`Authenticated as ${email}`, 'success');
+      localStorage.setItem("name", data.user.name);
+      localStorage.setItem("id", data.user.id);
+      localStorage.setItem("email", data.user.email);
+      localStorage.setItem("token", data.token);
+      navigate("/");
+    } catch (error) {
+      addToast(`Login failed`);
+    }
   };
 
   return (

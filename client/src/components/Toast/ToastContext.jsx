@@ -22,7 +22,7 @@ export const ToastProvider = ({ children }) => {
           <div
             key={toast.id}
             className={`px-4 py-2 rounded-lg shadow-lg text-white text-sm transition-all duration-300 ${
-              toast.type === "connected" ? "bg-green-500" : "bg-red-500"
+              toast.type === "success" ? "bg-green-500" : "bg-red-500"
             }`}
           >
             {toast.message}

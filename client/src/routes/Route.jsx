@@ -1,5 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import ProtectedRoute from "./ProtectedRoute";
+
+// Pages
 import Login from "../pages/Login";
 import Dashboard from "../pages/Dashboard";
 import Overview from "../pages/Dashboard/Overview";
@@ -15,18 +18,22 @@ export default function RouteNavigation() {
   return (
     <Router>
       <Routes>
+        {/* Public route */}
         <Route path="/auth/login" element={<Login />} />
 
-        <Route path="/" element={<Dashboard />}>
-          <Route index element={<Overview />} />
-          <Route path="machines" element={<Machines />} />
-          <Route path="cameras" element={<Cameras />} />
-          <Route path="operators" element={<Operators />} />
-          <Route path="inspections" element={<Inspections />} />
-          <Route path="thresholds" element={<Thresholds />} />
-          <Route path="alerts" element={<Alerts />} />
-          <Route path="reports" element={<Reports />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
+        {/* Protected routes */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/" element={<Dashboard />}>
+            <Route index element={<Overview />} />
+            <Route path="machines" element={<Machines />} />
+            <Route path="cameras" element={<Cameras />} />
+            <Route path="operators" element={<Operators />} />
+            <Route path="inspections" element={<Inspections />} />
+            <Route path="thresholds" element={<Thresholds />} />
+            <Route path="alerts" element={<Alerts />} />
+            <Route path="reports" element={<Reports />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Route>
         </Route>
       </Routes>
     </Router>

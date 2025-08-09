@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@cycjimmy/jsmpeg-player": "^6.1.2",
     "@headlessui/react": "^2.2.7",
     "@heroicons/react": "^2.2.0",
     "@heroui/input": "^2.4.16",
@@ -17,13 +18,15 @@
     "@nextui-org/react": "^2.6.11",
     "@react-oauth/google": "^0.12.2",
     "framer-motion": "^12.23.12",
+    "jsmpeg-player": "^3.0.3",
     "lottie-react": "^2.4.1",
     "lucide-react": "^0.536.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-is": "^19.1.1",
     "react-router-dom": "^7.7.1",
-    "recharts": "^3.1.0"
+    "recharts": "^3.1.0",
+    "socket.io-client": "^4.8.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.1",
