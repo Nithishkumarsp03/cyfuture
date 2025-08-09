@@ -3,6 +3,7 @@ import io from "socket.io-client";
 
 // --- Configuration ---
 const SOCKET_SERVER_URL = import.meta.env.VITE_SOCKET_SERVER_URL;
+console.log(SOCKET_SERVER_URL)
 const PEER_CONNECTION_CONFIG = {
   iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
 };
