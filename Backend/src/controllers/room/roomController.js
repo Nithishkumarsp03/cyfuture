@@ -44,16 +44,14 @@ const roomController = {
 
   joinRoom: async (req, res) => {
     try {
-      // *** FIX 4: Add this critical check here too! ***
       if (!req.user) {
         return res.status(403).json({ message: 'Forbidden: Only users can join rooms.' });
       }
       
       const { roomId } = req.params;
       const { role, pin } = req.body;
-      const user_id = req.user.id; // This is now safe
+      const user_id = req.user.id;
 
-      // ... (rest of the logic is mostly fine)
       if (!role || !['streamer', 'viewer'].includes(role)) {
         return res.status(400).json({ message: "Invalid or missing role. Must be 'streamer' or 'viewer'." });
       }
@@ -69,13 +67,14 @@ const roomController = {
         return res.status(403).json({ message: "Invalid PIN for private room." });
       }
       
-      const participantCheckQuery = "SELECT * FROM participants WHERE user_id = $1 AND room_id = $2";
-      const participantCheck = await pool.query(participantCheckQuery, [user_id, roomId]);
-      if (participantCheck.rows.length > 0) {
-        return res.status(409).json({ message: "You are already in this room." });
-      }
-
-      // *** FIX 5: Generate and use a UUID for the new participant's ID ***
+      // *** THE FIX IS HERE ***
+      // Instead of checking if the user is already in the room and failing,
+      // we first remove any old, stale record they might have.
+      // This makes re-joining seamless.
+      const deleteQuery = 'DELETE FROM participants WHERE user_id = $1 AND room_id = $2';
+      await pool.query(deleteQuery, [user_id, roomId]);
+      
+      // Now, we can safely insert the new participant record with their chosen role.
       const newParticipantId = uuidv4();
       const insertQuery = `
         INSERT INTO participants (id, user_id, room_id, role) 
