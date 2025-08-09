@@ -6,9 +6,9 @@ const roomController = {
   createRoom: async (req, res) => {
     console.log(req.body);
     try {
-      if (!req.user) {
-        return res.status(403).json({ message: 'Forbidden: This action requires a logged-in user.' });
-      }
+      // if (!req.user) {
+      //   return res.status(403).json({ message: 'Forbidden: This action requires a logged-in user.' });
+      // }
 
       const { name, is_private, pin } = req.body;
       const owner_id = req.user.id;
