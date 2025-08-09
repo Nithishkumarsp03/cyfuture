@@ -48,8 +48,11 @@ export default function Dashboard() {
     <div className="flex h-full min-h-screen bg-gray-50 font-sans">
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-screen w-64 bg-white border-r p-4 flex flex-col transform transition-transform duration-200 z-0
-        ${sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}
+        className={`absolute md:fixed top-0 left-0 h-screen w-64 bg-white border-r p-4 flex flex-col transform transition-transform duration-200
+    ${sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"} ${
+          // On mobile, high z-index so it overlays; on desktop, lower so charts aren't covered
+          sidebarOpen ? "z-50" : "md:z-0"
+        }`}
       >
         <div className="flex items-center justify-between mb-6">
           <div className="text-2xl font-bold">Admin Dashboard</div>
@@ -71,9 +74,27 @@ export default function Dashboard() {
             />
           ))}
         </div>
-        <div className="mt-4 text-xs text-gray-500">
-          Path: {location.pathname} • Last updated:{" "}
-          {new Date().toLocaleString()}
+        <div className="mt-4 flex items-center gap-3">
+          {/* Profile Circle */}
+          <div className="flex justify-center items-center border border-gray-400 bg-gray-100 w-12 h-12 rounded-full text-lg font-semibold text-gray-700">
+            {localStorage.getItem("name")?.[0]?.toUpperCase()}
+          </div>
+
+          {/* User Info */}
+          <div className="max-w-[150px]">
+            <div
+              className="text-sm font-medium text-gray-900 truncate"
+              title={localStorage.getItem("name")}
+            >
+              {localStorage.getItem("name")}
+            </div>
+            <div
+              className="text-xs text-gray-500 truncate"
+              title={localStorage.getItem("email")}
+            >
+              {localStorage.getItem("email")}
+            </div>
+          </div>
         </div>
       </aside>
 
