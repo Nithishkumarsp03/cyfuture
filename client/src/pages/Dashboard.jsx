@@ -13,6 +13,8 @@ import {
   Menu,
   X,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import LogoutModal from "./Dashboard/LogoutModal";
 
 const tabs = [
   { label: "Overview", to: "", icon: LayoutDashboard },
@@ -43,6 +45,13 @@ const TabButton = ({ to, label, Icon }) => (
 export default function Dashboard() {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [logout, setLogout] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate('/auth/login', { replace: true });
+  }
 
   return (
     <div className="flex h-full min-h-screen bg-gray-50 font-sans">
@@ -74,7 +83,7 @@ export default function Dashboard() {
             />
           ))}
         </div>
-        <div className="mt-4 flex items-center gap-3">
+        <div className="mt-4 flex items-center gap-3" onClick={() => setLogout(true)}>
           {/* Profile Circle */}
           <div className="flex justify-center items-center border border-gray-400 bg-gray-100 w-12 h-12 rounded-full text-lg font-semibold text-gray-700">
             {localStorage.getItem("name")?.[0]?.toUpperCase()}
@@ -94,6 +103,7 @@ export default function Dashboard() {
             >
               {localStorage.getItem("email")}
             </div>
+            <div className="text-tiny font-semibold text-red-600 cursor-pointer">Logout</div>
           </div>
         </div>
       </aside>
@@ -130,6 +140,7 @@ export default function Dashboard() {
 
         <Outlet />
       </main>
+      {logout && <LogoutModal onClose={() => setLogout(false)} onConfirm={handleLogout}/>}
     </div>
   );
 }

@@ -5,11 +5,13 @@ import { GoogleLogin } from "@react-oauth/google";
 import Input from "../components/input/input";
 import NextUIButton from "../components/button/button";
 import { useToast } from "../components/Toast/ToastContext";
+import { ClipLoader } from "react-spinners";
 
 export default function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const { addToast } = useToast();
   const api = import.meta.env.VITE_API_URL;
 
@@ -25,35 +27,38 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(!email || !password){
-      addToast('Both Email & Password are required!');
+    setLoading(true);
+
+    if (!email || !password) {
+      addToast("Both Email & Password are required!", "error");
+      setLoading(false);
       return;
     }
+
     try {
-      const res = await fetch(
-        `${api}/auth/login`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
-        }
-      );
+      const res = await fetch(`${api}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
       const data = await res.json();
-      if (!res.ok) throw new Error("Login Failed");
-      if (!data.token) {
-        throw new Error("Invalid login Credentials");
+
+      if (!res.ok || !data.token) {
+        throw new Error(data.message || "Invalid email or password");
       }
-      addToast(`Authenticated as ${email}`, 'success');
+
+      addToast(`Authenticated as ${email}`, "success");
       localStorage.setItem("name", data.user.name);
       localStorage.setItem("id", data.user.id);
       localStorage.setItem("email", data.user.email);
       localStorage.setItem("token", data.token);
+
       navigate("/");
     } catch (error) {
-      addToast(`Login failed`);
+      addToast(error.message, "error"); // ✅ safer
+    } finally {
+      setLoading(false); // ✅ always reset
     }
   };
 
@@ -97,7 +102,14 @@ export default function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <NextUIButton type="submit">Sign In</NextUIButton>
+            <NextUIButton type="submit">
+              {loading ? "Signing in..." : "Sign in"}
+              {loading ? (
+                <ClipLoader color="white" loading={loading} size={24} />
+              ) : (
+                ""
+              )}
+            </NextUIButton>
           </form>
 
           <div className="flex items-center gap-4 my-6">

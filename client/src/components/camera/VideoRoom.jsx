@@ -129,7 +129,7 @@ const VideoRoom = ({ roomId, userRole, currentUser, onLeave }) => {
 
     // This is the corrected logic flow to prevent race conditions.
     if (userRole === 'streamer') {
-      navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+      navigator.mediaDevices.getUserMedia({ video: true, audio: false })
         .then(stream => {
           setLocalStream(stream);
           localStreamRef.current = stream;

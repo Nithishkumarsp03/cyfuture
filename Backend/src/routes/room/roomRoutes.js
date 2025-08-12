@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const roomController = require('../../controllers/room/roomController');
+const fetchActiverooms = require('../../controllers/room/fetchActiveroom');
 
 
 // POST /api/rooms - Create a new room
@@ -13,5 +14,6 @@ router.post('/:roomId/join', roomController.joinRoom);
 router.get('/:roomId/participants', roomController.getRoomParticipants);
 
 // You can add more routes here like leaving a room, fetching public rooms, etc.
+router.get('/active-rooms', fetchActiverooms.fechActiverooms);
 
 module.exports = router;
