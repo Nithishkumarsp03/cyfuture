@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import io from "socket.io-client";
+import ParticipantList from "./ParticipantList";
+import { mockParticipants } from "../../utils/mockData";
 
 // --- Configuration ---
 const SOCKET_SERVER_URL = import.meta.env.VITE_SOCKET_SERVER_URL;
@@ -31,6 +33,7 @@ const VideoTile = ({ peerId, stream }) => {
 const VideoRoom = ({ roomId, roomName, userRole, currentUser, onLeave }) => {
   const [localStream, setLocalStream] = useState(null);
   const [remoteStreams, setRemoteStreams] = useState({});
+  const [participants, setParticipants] = useState([])
 
   const socketRef = useRef(null);
   const peerConnections = useRef({});
@@ -152,45 +155,68 @@ const VideoRoom = ({ roomId, roomName, userRole, currentUser, onLeave }) => {
   }, [roomId, userRole, currentUser, onLeave, createPeerConnection, handleReceiveOffer]);
 
   return (
-    <div className="">
-      <div className="max-w-7xl mx-auto">
-        <header className="flex justify-between items-center mb-6">
-          <div>
-            <h1 className="text-2xl font-bold">Room: <span className="font-mono">{roomName}</span></h1>
-            <p className="text-sm text-gray-400"><span className="font-semibold">{userRole}</span></p>
-          </div>
-          <button onClick={onLeave} className="px-4 py-2 font-semibold text-white bg-red-600 rounded-lg shadow-md hover:bg-red-700 transition-colors">
-            Leave Room
-          </button>
-        </header>
-
-        {userRole === 'streamer' && localStream && (
-          <div className="mb-8">
-            <h2 className="text-xl font-semibold mb-2">Your Live Stream</h2>
-            <div className="w-full md:w-1/2 lg:w-1/3">
-              <VideoTile peerId="My Camera" stream={localStream} />
-            </div>
-          </div>
-        )}
-
-        {userRole === 'viewer' && (
-          <div>
-            <h2 className="text-xl font-semibold mb-4">Live Streams</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {Object.keys(remoteStreams).length > 0 ? (
-                Object.entries(remoteStreams).map(([peerId, stream]) => (
-                  <VideoTile key={peerId} peerId={`User ${peerId.substring(0, 6)}`} stream={stream} />
-                ))
-              ) : (
-                <div className="col-span-full text-center py-10 bg-gray-800 rounded-lg">
-                  <p className="text-gray-400">Waiting for streamers to join...</p>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-      </div>
+    <div className="max-w-7xl mx-auto">
+  <header className="flex justify-between items-center mb-6">
+    <div>
+      <h1 className="text-2xl font-bold">
+        Room: <span className="font-mono">{roomName}</span>
+      </h1>
+      <p className="text-sm text-gray-400">
+        <span className="font-semibold">{roomId}</span>
+      </p>
+      <p className="text-sm text-gray-400">
+        <span className="font-semibold">{userRole}</span>
+      </p>
     </div>
+    <button
+      onClick={onLeave}
+      className="px-4 py-2 font-semibold text-white bg-red-600 rounded-lg shadow-md hover:bg-red-700 transition-colors"
+    >
+      Leave Room
+    </button>
+  </header>
+
+  <div className="grid grid-cols-4 gap-6">
+    {/* Main Content */}
+    <div className="col-span-3">
+      {userRole === "streamer" && localStream && (
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold mb-2">Your Live Stream</h2>
+          <div className="w-full md:w-1/2 lg:w-1/3">
+            <VideoTile peerId="My Camera" stream={localStream} />
+          </div>
+        </div>
+      )}
+
+      {userRole === "viewer" && (
+        <div>
+          <h2 className="text-xl font-semibold mb-4">Live Streams</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {Object.keys(remoteStreams).length > 0 ? (
+              Object.entries(remoteStreams).map(([peerId, stream]) => (
+                <VideoTile
+                  key={peerId}
+                  peerId={`User ${peerId.substring(0, 6)}`}
+                  stream={stream}
+                />
+              ))
+            ) : (
+              <div className="col-span-full text-center py-10 bg-gray-800 rounded-lg">
+                <p className="text-gray-400">Waiting for streamers to join...</p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+
+    {/* Participants Sidebar */}
+    <div className="col-span-1 rounded-lg p-4">
+      <ParticipantList participants={mockParticipants}/>
+    </div>
+  </div>
+</div>
+
   );
 };
 

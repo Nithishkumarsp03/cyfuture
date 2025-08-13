@@ -11,7 +11,7 @@ const fechActiverooms = async (req, res) => {
     r.created_at
 FROM rooms r
 INNER JOIN users u ON u.id = r.owner_id
-
+INNER JOIN participants p on r.id = p.room_id;
 
     `;
 

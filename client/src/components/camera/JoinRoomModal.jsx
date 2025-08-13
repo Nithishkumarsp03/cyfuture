@@ -6,7 +6,7 @@ import NextUIButton from "../button/button";
 
 const JoinRoomModal = ({ onClose, onSuccess, RoomState }) => {
   // --- Component State ---
-  const [roomId, setRoomId] = useState(RoomState.roomId || "");
+  const [roomId, setRoomId] = useState(RoomState?.roomId || "");
   const [pin, setPin] = useState("");
   const [role, setRole] = useState("viewer"); // Default role is viewer
   const [isLoading, setIsLoading] = useState(false);

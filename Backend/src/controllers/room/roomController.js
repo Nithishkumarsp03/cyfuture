@@ -102,7 +102,7 @@ const roomController = {
 
       const { roomId } = req.params;
       const query = `
-        SELECT p.id, p.role, u.id as user_id, u.name, u.email 
+        SELECT p.id, p.role, u.name, u.email, p.joined_at
         FROM participants p
         JOIN users u ON p.user_id = u.id
         WHERE p.room_id = $1

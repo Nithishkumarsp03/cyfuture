@@ -84,4 +84,43 @@ export const mockAlerts = [
   { id: "alert-002", message: "Threshold exceeded for Paint discoloration (Line 1)", createdAt: "2025-07-30T15:00:00Z", acknowledged: true },
 ];
 
+export const mockParticipants = [
+  {
+    id: "u1",
+    name: "Alice Johnson",
+    role: "streamer",
+    email: "alice@example.com",
+    joined_at: "2025-08-13T08:30:00Z",
+  },
+  {
+    id: "u2",
+    name: "Bob Smith",
+    role: "viewer",
+    email: "bob@example.com",
+    joined_at: "2025-08-13T08:35:00Z",
+  },
+  {
+    id: "u3",
+    name: "Clara Chen",
+    role: "viewer",
+    email: "clara@example.com",
+    joined_at: "2025-08-13T08:40:00Z",
+  },
+  {
+    id: "u4",
+    name: "David Lee",
+    role: "streamer",
+    email: "david@example.com",
+    joined_at: "2025-08-13T08:45:00Z",
+  },
+  {
+    id: "u5",
+    name: "Eva Martinez",
+    role: "viewer",
+    email: "eva@example.com",
+    joined_at: "2025-08-13T08:50:00Z",
+  },
+];
+
+
 export const formatDate = (iso) => new Date(iso).toLocaleString();

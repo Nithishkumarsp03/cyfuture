@@ -35,7 +35,7 @@ const CreateRoomModal = ({ onClose, onSuccess }) => {
       const response = await createRoomAPI(roomData);
       
       addToast(response.message || "Room created successfully!", "success");
-      onSuccess(response.room.id, 'viewer'); // Pass the new room ID and default role to the parent
+      onSuccess(response.room.id, 'viewer', name); // Pass the new room ID and default role to the parent
       onClose(); // Close the modal on success
 
     } catch (err) {

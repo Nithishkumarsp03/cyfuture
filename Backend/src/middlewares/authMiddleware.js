@@ -17,7 +17,7 @@ const authMiddleware = async (req, res, next) => {
           return next(); // Successfully authenticated as a user, stop processing.
         } catch (err) {
           // If the token is present but invalid (expired, etc.)
-          return res.status(403).json({ message: 'Forbidden: Invalid or expired token.' });
+          return res.status(401).json({ message: 'Forbidden: Invalid or expired token.' });
         }
       }
     }
@@ -31,7 +31,7 @@ const authMiddleware = async (req, res, next) => {
         req.clientApp = { name: rows[0].app_name }; // Attach client app payload
         return next(); // Successfully authorized as an application, stop processing.
       } else {
-        return res.status(403).json({ message: 'Forbidden: Invalid API Key.' });
+        return res.status(401).json({ message: 'Forbidden: Invalid API Key.' });
       }
     }
 

@@ -47,8 +47,12 @@ const RoomLobby = ({ onJoinSuccess, RoomState, setRoomState }) => {
 
       const data = await res.json();
       if (!res.ok) {
+        if (res.status === 404) {
+          throw new Error("No active rooms found");
+        }
         throw new Error("Failed to fetch rooms");
       }
+
       setActiveRooms(data);
     } catch (error) {
       addToast(error.message || "Failed to fetch rooms");
@@ -202,7 +206,11 @@ const RoomLobby = ({ onJoinSuccess, RoomState, setRoomState }) => {
                 <button
                   onClick={() => {
                     setShowJoinModal(true);
-                    setRoomState((prev) => ({ ...prev, roomId: room.id, roomName: room.room_name }));
+                    setRoomState((prev) => ({
+                      ...prev,
+                      roomId: room.id,
+                      roomName: room.room_name,
+                    }));
                   }}
                   className="mt-auto px-4 py-2 text-sm font-medium text-white bg-[#2563eb] rounded-lg hover:bg-indigo-700 hover:scale-102 transition-all shadow"
                 >
@@ -221,6 +229,7 @@ const RoomLobby = ({ onJoinSuccess, RoomState, setRoomState }) => {
         <CreateRoomModal
           onClose={() => setShowCreateModal(false)}
           onSuccess={onJoinSuccess}
+          RoomState={RoomState}
         />
       )}
       {showJoinModal && (

@@ -8,12 +8,18 @@ export const ToastProvider = ({ children }) => {
   const [toasts, setToasts] = useState([]);
 
   const addToast = useCallback((message, type) => {
+  setToasts((prev) => {
+    if (prev.some(t => t.message === message && t.type === type)) {
+      return prev; // Skip duplicate
+    }
     const id = Date.now();
-    setToasts((prev) => [...prev, { id, message, type }]);
     setTimeout(() => {
-      setToasts((prev) => prev.filter((t) => t.id !== id));
+      setToasts(current => current.filter((t) => t.id !== id));
     }, 3000);
-  }, []);
+    return [...prev, { id, message, type }];
+  });
+}, []);
+
 
   return (
     <ToastContext.Provider value={{ addToast }}>
