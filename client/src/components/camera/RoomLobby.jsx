@@ -202,7 +202,7 @@ const RoomLobby = ({ onJoinSuccess, RoomState, setRoomState }) => {
                 <button
                   onClick={() => {
                     setShowJoinModal(true);
-                    setRoomState((prev) => ({ ...prev, roomId: room.id }));
+                    setRoomState((prev) => ({ ...prev, roomId: room.id, roomName: room.room_name }));
                   }}
                   className="mt-auto px-4 py-2 text-sm font-medium text-white bg-[#2563eb] rounded-lg hover:bg-indigo-700 hover:scale-102 transition-all shadow"
                 >

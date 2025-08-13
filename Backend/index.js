@@ -33,6 +33,14 @@ io.on('connection', (socket) => {
     if (!rooms[roomId]) {
       rooms[roomId] = [];
     }
+
+    const alreadyInRoom = rooms[roomId].some(user => user.userId === userInfo.id);
+  if (alreadyInRoom) {
+    console.warn(`⚠️ User ${userInfo.id} is already in room ${roomId}, skipping duplicate add.`);
+    socket.emit('all-other-users', rooms[roomId].filter(u => u.socketId !== socket.id));
+    socket.join(roomId);
+    return;
+  }
     
     socket.emit('all-other-users', rooms[roomId]);
     socket.join(roomId);

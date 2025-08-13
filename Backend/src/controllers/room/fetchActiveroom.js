@@ -3,12 +3,16 @@ const { pool } = require("../../config/db");
 const fechActiverooms = async (req, res) => {
   try {
     const query = `
-      SELECT r.id, r.name AS room_name, u.name AS user_name, r.is_private, r.created_at
-      FROM rooms r
-      INNER JOIN participants p
-      ON r.id = p.room_id
-      INNER JOIN users u
-      ON u.id = r.owner_id
+      SELECT DISTINCT
+    r.id,
+    r.name AS room_name,
+    u.name AS user_name,
+    r.is_private,
+    r.created_at
+FROM rooms r
+INNER JOIN users u ON u.id = r.owner_id
+
+
     `;
 
     const { rows } = await pool.query(query);
