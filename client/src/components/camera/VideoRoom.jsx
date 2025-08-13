@@ -28,7 +28,7 @@ const VideoTile = ({ peerId, stream }) => {
 
 
 // --- Main Video Room Component ---
-const VideoRoom = ({ roomId, userRole, currentUser, onLeave }) => {
+const VideoRoom = ({ roomId, roomName, userRole, currentUser, onLeave }) => {
   const [localStream, setLocalStream] = useState(null);
   const [remoteStreams, setRemoteStreams] = useState({});
 
@@ -152,12 +152,12 @@ const VideoRoom = ({ roomId, userRole, currentUser, onLeave }) => {
   }, [roomId, userRole, currentUser, onLeave, createPeerConnection, handleReceiveOffer]);
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-4">
+    <div className="">
       <div className="max-w-7xl mx-auto">
         <header className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-2xl font-bold">Room: <span className="font-mono">{roomId}</span></h1>
-            <p className="text-sm text-gray-400">Your Role: <span className="font-semibold">{userRole}</span></p>
+            <h1 className="text-2xl font-bold">Room: <span className="font-mono">{roomName}</span></h1>
+            <p className="text-sm text-gray-400"><span className="font-semibold">{userRole}</span></p>
           </div>
           <button onClick={onLeave} className="px-4 py-2 font-semibold text-white bg-red-600 rounded-lg shadow-md hover:bg-red-700 transition-colors">
             Leave Room

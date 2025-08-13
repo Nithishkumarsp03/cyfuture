@@ -4,9 +4,9 @@ import { useToast } from "../Toast/ToastContext"; // Your toast notification hoo
 import { ClipLoader } from "react-spinners";
 import NextUIButton from "../button/button";
 
-const JoinRoomModal = ({ onClose, onSuccess }) => {
+const JoinRoomModal = ({ onClose, onSuccess, RoomState }) => {
   // --- Component State ---
-  const [roomId, setRoomId] = useState("");
+  const [roomId, setRoomId] = useState(RoomState.roomId || "");
   const [pin, setPin] = useState("");
   const [role, setRole] = useState("viewer"); // Default role is viewer
   const [isLoading, setIsLoading] = useState(false);
@@ -36,7 +36,7 @@ const JoinRoomModal = ({ onClose, onSuccess }) => {
         response.message || `Successfully joined room as a ${role}!`,
         "success"
       );
-      onSuccess(roomId, role); // Pass the room ID and selected role to the parent
+      onSuccess(roomId, role, RoomState.roomName); // Pass the room ID and selected role to the parent
       onClose(); // Close the modal on success
     } catch (err) {
       const errorMessage =

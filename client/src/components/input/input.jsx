@@ -7,6 +7,7 @@ export default function Input({
   placeholder,
   value,
   onChange,
+  startDecorator
 }) {
   const [showPassword, setShowPassword] = useState(false);
   const isPassword = type === "password";

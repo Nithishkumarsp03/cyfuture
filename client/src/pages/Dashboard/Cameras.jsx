@@ -13,10 +13,11 @@ const Cameras = () => {
     inRoom: false,
     roomId: null,
     userRole: null,
+    roomName: null
   });
 
-  const handleJoinSuccess = (roomId, role) => {
-    setRoomState({ inRoom: true, roomId, userRole: role });
+  const handleJoinSuccess = (roomId, role, name) => {
+    setRoomState({ inRoom: true, roomId, userRole: role, roomName: name });
   };
 
   const handleLeaveRoom = () => {
@@ -28,7 +29,7 @@ const Cameras = () => {
         headers: { 'Content-Type': 'application/json' }
       });
     }
-    setRoomState({ inRoom: false, roomId: null, userRole: null });
+    setRoomState({ inRoom: false, roomId: null, userRole: null, roomName: null });
   };
 
   useEffect(() => {
@@ -42,15 +43,18 @@ const Cameras = () => {
     return () => {
       window.removeEventListener('beforeunload', handleUnload);
     };
-  }, [roomState.inRoom, roomState.roomId, currentUser.id]);
+  }, [roomState.inRoom, roomState.roomId, currentUser.id, roomState.roomName]);
+  console.log(roomState.roomName)
 
   if (!roomState.inRoom) {
-    return <RoomLobby onJoinSuccess={handleJoinSuccess} />;
+    return <RoomLobby onJoinSuccess={handleJoinSuccess} RoomState={roomState} setRoomState={setRoomState}/>;
   }
+
 
   return (
     <VideoRoom
       roomId={roomState.roomId}
+      roomName={roomState.roomName}
       userRole={roomState.userRole}
       currentUser={currentUser}
       onLeave={handleLeaveRoom}

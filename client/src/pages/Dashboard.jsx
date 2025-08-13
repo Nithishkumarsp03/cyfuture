@@ -119,13 +119,13 @@ export default function Dashboard() {
             <Menu className="w-6 h-6" />
           </button>
 
-          <h1 className="text-3xl font-semibold">
+          {/* <h1 className="text-3xl font-semibold">
             {location.pathname === "/"
               ? "OVERVIEW"
               : location.pathname.replace("/", "").toUpperCase()}
-          </h1>
+          </h1> */}
 
-          <div className="flex gap-2">
+          {/* <div className="flex gap-2">
             <button
               className="px-4 py-2 bg-green-600 text-white rounded"
               onClick={() => window.location.reload()}
@@ -135,7 +135,7 @@ export default function Dashboard() {
             <button className="px-4 py-2 bg-indigo-600 text-white rounded">
               Settings
             </button>
-          </div>
+          </div> */}
         </div>
 
         <Outlet />
