@@ -33,6 +33,8 @@ if (isProduction) {
 
 const pool = new Pool(poolConfig);
 
+
+
 // Connect to DB and log success/error
 pool.connect()
   .then(() => console.log(`✅ Connected to PostgreSQL database in ${isProduction ? 'production' : 'development'} mode`))
