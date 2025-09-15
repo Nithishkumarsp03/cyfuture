@@ -20,7 +20,7 @@ app.use(cors({
 app.use(bodyParser.json());
 
 app.get(`${api}/`, (req, res) => {
-  res.send("Hello");
+  res.send("Hello from the API");
 });
 
 app.use(`${api}/auth`, authRoutes);
