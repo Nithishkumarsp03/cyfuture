@@ -47,15 +47,12 @@ const RoomLobby = ({ onJoinSuccess, RoomState, setRoomState }) => {
 
       const data = await res.json();
       if (!res.ok) {
-        if (res.status === 404) {
-          throw new Error("No active rooms found");
-        }
         throw new Error("Failed to fetch rooms");
       }
 
       setActiveRooms(data);
     } catch (error) {
-      addToast(error.message || "Failed to fetch rooms");
+      // addToast(error.message || "Failed to fetch rooms");
     }
   };
 

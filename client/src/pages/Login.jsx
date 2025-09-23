@@ -25,6 +25,14 @@ export default function Login() {
   //   }
   // }
 
+  const handleDemo = () => {
+    localStorage.setItem("name", "PRAGYA");
+    localStorage.setItem("id", 1);
+    localStorage.setItem("email", "pragya@cyfuture.com");
+    localStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiN2RkNjdmNGQtNWRiYy00MmM3LTliZTktNjE0YjlmNzI0MWZjIiwiZW1haWwiOiJuaXRoaXNoa3VtYXIuY3MyM0BiaXRzYXRoeS5hYy5pbiJ9LCJpYXQiOjE3NTQ3MzAzMzUsImV4cCI6MTc1NDczMzkzNX0.CNNmOoV_EsTGMGDxe4mx6rNqaQGpZbJyiyG4_YttojE");
+    navigate('/');
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -118,13 +126,13 @@ export default function Login() {
             <hr className="flex-grow border-zinc-200 dark:border-zinc-700" />
           </div>
 
-          <div className="flex justify-center">
+          <div className="flex justify-center gap-2">
             <GoogleLogin
               onSuccess={(res) => console.log(res)}
               onError={() => console.log("Google Login Failed")}
               useOneTap
-              width="300"
             />
+            <NextUIButton onClick={handleDemo}>Login with Demo</NextUIButton>
           </div>
         </div>
       </div>
