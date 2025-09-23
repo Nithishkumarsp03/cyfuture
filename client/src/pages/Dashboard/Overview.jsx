@@ -27,6 +27,7 @@ export default function Overview() {
   const totalDefects = mockDefects.length;
   const criticalOpen = mockDefects.filter((d) => d.severity === "critical" && d.status === "open").length;
   const openTickets = mockDefects.filter((d) => d.status !== "resolved").length;
+  const PIE_CHART_COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff8042', '#a4de6c', '#d0ed57', '#83a6ed', '#8dd1e1'];
 
   const machineFrequency = useMemo(() => {
     const map = {};
@@ -86,37 +87,40 @@ export default function Overview() {
             </ResponsiveContainer>
           </div>
         </div>
-        <div className="p-4 bg-white rounded-2xl shadow">
-          <div className="font-semibold mb-2">By Defect Type</div>
-          <div style={{ width: "100%", height: 200 }}>
-            <ResponsiveContainer>
-              <PieChart>
-                <Pie data={defectTypeBreakdown} dataKey="value" nameKey="name" outerRadius={70} label>
-                  {defectTypeBreakdown.map((entry, idx) => (
-                    <Cell key={idx} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
+
+        <div className="flex justify-center items-center gap-3">
+          <div className="p-4 bg-white rounded-2xl shadow flex-1">
+            <div className="font-semibold mb-2">By Defect Type</div>
+            <div style={{ width: "100%", height: 200 }}>
+              <ResponsiveContainer>
+                <PieChart>
+                  <Pie data={defectTypeBreakdown} dataKey="value" nameKey="name" outerRadius={70} label>
+                    {defectTypeBreakdown.map((entry, idx) => (
+                      <Cell key={idx} fill={PIE_CHART_COLORS[idx % PIE_CHART_COLORS.length]}/>
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
           </div>
-        </div>
-        <div className="p-4 bg-white rounded-2xl shadow">
-          <div className="font-semibold mb-2">Machine-wise Defects</div>
-          <div style={{ width: "100%", height: 200 }}>
-            <ResponsiveContainer>
-              <BarChart data={machineFrequency}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="machineId" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="count">
-                  {machineFrequency.map((entry, idx) => (
-                    <Cell key={idx} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
+          <div className="p-4 bg-white rounded-2xl shadow flex-1">
+            <div className="font-semibold mb-2">Machine-wise Defects</div>
+            <div style={{ width: "100%", height: 200 }}>
+              <ResponsiveContainer>
+                <BarChart data={machineFrequency}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="machineId" />
+                  <YAxis />
+                  <Tooltip />
+                  <Bar dataKey="count" fill="#2563eb">
+                    {machineFrequency.map((entry, idx) => (
+                      <Cell key={idx} fill="#2563eb"/>
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           </div>
         </div>
       </div>
