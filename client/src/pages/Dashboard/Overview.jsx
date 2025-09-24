@@ -124,7 +124,7 @@ export default function Overview() {
 
       {/* TREND */}
       <div className="p-5 bg-white rounded-2xl shadow hover:shadow-md transition-all">
-        <h2 className="font-semibold text-gray-700 mb-3 border-b pb-1">📈 Defect Trend</h2>
+        <h2 className="font-semibold text-gray-700 mb-3 border-b pb-1">Defect Trend</h2>
         <div style={{ width: "100%", height: 260 }}>
           <ResponsiveContainer>
             <AreaChart data={trendData}>
@@ -148,7 +148,7 @@ export default function Overview() {
       {/* SEVERITY + DEFECT TYPE */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="p-5 bg-white rounded-2xl shadow hover:shadow-md transition-all">
-          <h2 className="font-semibold text-gray-700 mb-3 border-b pb-1">🚦 Severity Breakdown</h2>
+          <h2 className="font-semibold text-gray-700 mb-3 border-b pb-1">Severity Breakdown</h2>
           <div style={{ width: "100%", height: 260 }}>
             <ResponsiveContainer>
               <PieChart>
@@ -171,7 +171,7 @@ export default function Overview() {
         </div>
 
         <div className="p-5 bg-white rounded-2xl shadow hover:shadow-md transition-all">
-          <h2 className="font-semibold text-gray-700 mb-3 border-b pb-1">🛠 By Defect Type</h2>
+          <h2 className="font-semibold text-gray-700 mb-3 border-b pb-1">By Defect Type</h2>
           <div style={{ width: "100%", height: 260 }}>
             <ResponsiveContainer>
               <PieChart>
@@ -196,7 +196,7 @@ export default function Overview() {
 
       {/* MACHINE DEFECTS */}
       <div className="p-5 bg-white rounded-2xl shadow hover:shadow-md transition-all">
-        <h2 className="font-semibold text-gray-700 mb-3 border-b pb-1">🏭 Machine-wise Defects</h2>
+        <h2 className="font-semibold text-gray-700 mb-3 border-b pb-1">Machine-wise Defects</h2>
         <div style={{ width: "100%", height: 300 }}>
           <ResponsiveContainer>
             <BarChart data={machineFrequency}>
