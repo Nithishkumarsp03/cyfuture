@@ -13,6 +13,7 @@ import Thresholds from "../pages/Dashboard/Thresholds";
 import Alerts from "../pages/Dashboard/Alerts";
 import Reports from "../pages/Dashboard/Reports";
 import Cameras from "../pages/Dashboard/Cameras";
+import Showvideo from "../pages/Dashboard/Showvideo";
 
 export default function RouteNavigation() {
   return (
@@ -20,6 +21,7 @@ export default function RouteNavigation() {
       <Routes>
         {/* Public route */}
         <Route path="/auth/login" element={<Login />} />
+        <Route path="/showvideo" element={<Showvideo />} />
 
         {/* Protected routes */}
         <Route element={<ProtectedRoute />}>
