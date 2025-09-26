@@ -69,19 +69,19 @@ export default function Showvideo() {
               onClick={handlePrev}
               className="px-6 py-3 bg-gray-200 rounded-xl text-gray-800 font-semibold shadow hover:bg-gray-300 transition"
             >
-              ⬅ Previous
+              Previous
             </button>
             <button
               onClick={handleRestart}
               className="px-6 py-3 bg-yellow-400 rounded-xl text-white font-semibold shadow hover:bg-yellow-500 transition"
             >
-              🔄 Restart
+              Restart
             </button>
             <button
               onClick={handleNext}
               className="px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold shadow hover:bg-blue-700 transition"
             >
-              Next ➡
+              Next
             </button>
           </div>
 
