@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import LogoutModal from "./Dashboard/LogoutModal";
+import DemoVideoPrompt from "./VideoPreview";
 
 const tabs = [
   { label: "Overview", to: "", icon: LayoutDashboard },
@@ -64,7 +65,7 @@ export default function Dashboard() {
         }`}
       >
         <div className="flex items-center justify-between mb-6">
-          <div className="text-2xl font-bold">Admin Dashboard</div>
+          <div className="text-2xl font-bold">Dashboard</div>
           <button
             className="md:hidden p-2 rounded hover:bg-gray-100"
             onClick={() => setSidebarOpen(false)}
@@ -141,6 +142,7 @@ export default function Dashboard() {
         <Outlet />
       </main>
       {logout && <LogoutModal onClose={() => setLogout(false)} onConfirm={handleLogout}/>}
+      <DemoVideoPrompt />
     </div>
   );
 }

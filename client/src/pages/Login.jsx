@@ -95,6 +95,10 @@ export default function Login() {
             </p>
           </div>
 
+          <div className="flex justify-end">
+            <NextUIButton onClick={handleDemo} className="w-[160px] border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100">Login with Demo</NextUIButton>
+          </div>
+
           <form className="space-y-5" onSubmit={handleSubmit}>
             <Input
               label="Email address"
@@ -132,7 +136,6 @@ export default function Login() {
               onError={() => console.log("Google Login Failed")}
               useOneTap
             />
-            <NextUIButton onClick={handleDemo}>Login with Demo</NextUIButton>
           </div>
         </div>
       </div>
