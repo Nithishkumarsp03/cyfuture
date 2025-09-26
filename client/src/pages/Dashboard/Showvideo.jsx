@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Video1 from "../../assets/videos/Video1.mp4";
-import Video2 from "../../assets/videos/Video2.mp4";
-import Video3 from "../../assets/videos/Video3.mp4";
+import Video1 from "../../assets/videos/video1.mp4";
+import Video2 from "../../assets/videos/video2.mp4";
+import Video3 from "../../assets/videos/video3.mp4";
 import { useNavigate } from "react-router-dom";
 
 export default function Showvideo() {
